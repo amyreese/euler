@@ -3,6 +3,7 @@
 import getopt
 import os
 from os import path
+import shutil
 from subprocess import Popen, PIPE
 import sys
 
@@ -56,7 +57,7 @@ def run(number):
     print
 
 def main():
-    options, arguments = getopt.getopt(sys.argv[1:], "ap:")
+    options, arguments = getopt.getopt(sys.argv[1:], "ap:c:")
 
     run_all = True
     run_one = False
@@ -65,6 +66,12 @@ def main():
         if option == "-a":
             run_all = True
             run_one = False
+
+        elif option == "-c":
+            template = path.join("cpp", "template.cpp")
+            problem = path.join("cpp", "problem" + value + ".cpp")
+            shutil.copy(template, problem)
+            sys.exit(0)
 
         elif option == "-p":
             run_all = False
