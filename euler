@@ -1,0 +1,78 @@
+#!/usr/bin/env python
+
+import getopt
+import os
+from os import path
+from subprocess import Popen, PIPE
+import sys
+
+def call(command):
+    command = "time --quiet -f %E " + command
+
+    proc = Popen(command.split(), stdout=PIPE, stderr=PIPE)
+    stdout, stderr = proc.communicate()
+
+    return stdout.strip(), stderr.strip()
+
+def run(number):
+    cwd = os.getcwd()
+
+    print "Executing problem #{0}...\n".format(number)
+
+    timing = {}
+    cpp = path.join("cpp", "problem" + number + ".cpp")
+    py = path.join("python", "problem" + number + ".py")
+
+    print "Output:"
+
+    if path.isfile(cpp):
+        command = "g++ -g -Wall -o problem{0} {1}".format(number, cpp)
+        call(command)
+
+        command = "./problem" + number
+        output, timing["cpp"] = call(command)
+
+        print "{0:<8}  {1}".format("cpp", output)
+
+        command = "rm " + command
+        call(command)
+
+    if path.isfile(py):
+        command = "python " + py
+        output, timing["python"] = call(command)
+
+        print "{0:<8}  {1}".format("python", output)
+
+    print "\nTiming:"
+    for lang in timing:
+        print "{0:<8}  {1}".format(lang, timing[lang])
+
+    print
+
+def main():
+    options, arguments = getopt.getopt(sys.argv[1:], "ap:")
+
+    run_all = True
+    run_one = False
+
+    for option, value in options:
+        if option == "-a":
+            run_all = True
+            run_one = False
+
+        elif option == "-p":
+            run_all = False
+            run_one = value
+
+        else:
+            print "zomg: {0} = {1}".format(option, value)
+            sys.exit(2)
+
+    if run_all:
+        pass
+
+    else:
+        run(run_one)
+
+if __name__ == "__main__":
+    main()
