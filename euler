@@ -6,11 +6,17 @@ from os import path
 from subprocess import Popen, PIPE
 import sys
 
-def call(command):
-    command = "time --quiet -f %E " + command
+def call(command, timed=True):
+    if timed:
+        command = "time --quiet -f %E " + command
 
     proc = Popen(command.split(), stdout=PIPE, stderr=PIPE)
     stdout, stderr = proc.communicate()
+
+    if not timed and stderr:
+        print "Error executing `{0}`:".format(command)
+        print stderr
+        sys.exit(1)
 
     return stdout.strip(), stderr.strip()
 
@@ -27,7 +33,7 @@ def run(number):
 
     if path.isfile(cpp):
         command = "g++ -g -Wall -o problem{0} {1}".format(number, cpp)
-        call(command)
+        call(command, False)
 
         command = "./problem" + number
         output, timing["cpp"] = call(command)
@@ -35,7 +41,7 @@ def run(number):
         print "{0:<8}  {1}".format("cpp", output)
 
         command = "rm " + command
-        call(command)
+        call(command, False)
 
     if path.isfile(py):
         command = "python " + py
