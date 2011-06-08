@@ -2,30 +2,62 @@
 #include <stdlib.h>
 #include <math.h>
 
+bool isprime(unsigned int number)
+{
+	unsigned int n = 3;
+	unsigned int m = number / 2 + 1;
+
+	if (number % 2 == 0)
+	{
+		return false;
+	}
+	
+	while (n < m)
+	{
+		if (number % n == 0)
+		{
+			return false;
+		}
+
+		n += 2;
+	}
+
+	return true;
+}
+
 unsigned int smallestmultiple(unsigned int range)
 {
-	unsigned int number = 1;
-	bool divides;
+	unsigned int result = 1;
 
-	while (true)
+	for (unsigned int i = 2; i <= range; i++)
+	{
+		if (isprime(i))
+		{
+			result *= i;
+		}
+	}
+
+	bool divides = false;
+	unsigned int remainder, factor;
+
+	while (!divides)
 	{
 		divides = true;
 
-		for (unsigned int i = 1; i <= range; i++)
+		for (unsigned int i = range; i > 1; i--)
 		{
-			if (number % i > 0)
+			remainder = result % i;
+
+			if (remainder > 0)
 			{
 				divides = false;
+				factor = (float)i / (float)remainder;
+				result *= factor;
 			}
 		}
-
-		if (divides)
-		{
-			return number;
-		}
-
-		number++;
 	}
+
+	return result;
 }
 
 int main(int argc, char* argv[])
