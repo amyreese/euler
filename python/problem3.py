@@ -14,28 +14,29 @@ def factors(number):
     return factors
 
 def primefactors(number):
-    if number % 2 == 0:
-        factors = [2]
-    else:
-        factors = []
+    remaining = number
+    factors = set()
 
-    n = 3
+    n = 2
     m = number / 2
 
     while n < m:
-        if number % n == 0:
-            prime = True
-            for f in factors:
-                if n % f == 0:
-                    prime = False
-                    break
+        while remaining % n == 0:
+            factors.add(n)
+            remaining = remaining / n
 
-            if prime:
-                factors.append(n)
+        if n > 2:
+            n += 2
+        else:
+            n += 1
 
-        n += 2
+        if n > remaining:
+            break
+
+    factors = list(factors)
+    factors.sort()
 
     return factors
 
-print primefactors(13195)
-#print primefactors(600851475143)
+#print primefactors(13195)
+print primefactors(600851475143)

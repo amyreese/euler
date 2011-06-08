@@ -2,43 +2,31 @@
 #include <stdlib.h>
 #include <math.h>
 
-#include <vector>
+#include <set>
 using namespace std;
 
-vector<unsigned int> primefactors(unsigned int number)
+set<unsigned long> primefactors(unsigned long number)
 {
-    vector<unsigned int> factors;
+	unsigned long remaining = number;
+    set<unsigned long> factors;
 
-    if (number % 2 == 0)
-    {
-        factors.push_back(2);
-    }
-    
-    unsigned int n = 3;
-    unsigned int m = number / 2;
+    unsigned long n = 2;
+    unsigned long m = number / 2;
 
     while (n < m)
     {
-        if (number % n == 0)
+        while (remaining % n == 0)
         {
-            bool prime = true;
-
-            for (vector<unsigned int>::iterator i = factors.begin(); i < factors.end(); i++)
-            {
-                if (n % *i == 0)
-                {
-                    prime = false;
-                    break;
-                }
-            }
-
-            if (prime)
-            {
-                factors.push_back(n);
-            }
+			factors.insert(n);
+			remaining = remaining / n;
         }
 
-        n++;
+		n = n > 2 ? n + 2 : n + 1;
+
+		if (n > remaining)
+		{
+			break;
+		}
     }
 
     return factors;
@@ -46,21 +34,21 @@ vector<unsigned int> primefactors(unsigned int number)
 
 int main(int argc, char* argv[])
 {
-    vector<unsigned int> factors = primefactors(13195);
-    //vector<unsigned int> factors = primefactors(600851475143);
+    //set<unsigned long> factors = primefactors(13195);
+    set<unsigned long> factors = primefactors(600851475143);
 
     printf("[");
     bool first = true;
-    for (vector<unsigned int>::iterator i = factors.begin(); i < factors.end(); i++)
+    for (set<unsigned long>::iterator i = factors.begin(); i != factors.end(); i++)
     {
         if (first)
         {
-            printf("%d", *i);
+            printf("%lu", *i);
             first = false;
         }
         else
         {
-            printf(", %d", *i);
+            printf(", %lu", *i);
         }
     }
     printf("]\n");
