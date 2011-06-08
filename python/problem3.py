@@ -18,9 +18,8 @@ def primefactors(number):
     factors = set()
 
     n = 2
-    m = number / 2
 
-    while n < m:
+    while n <= remaining:
         while remaining % n == 0:
             factors.add(n)
             remaining = remaining / n
@@ -29,9 +28,6 @@ def primefactors(number):
             n += 2
         else:
             n += 1
-
-        if n > remaining:
-            break
 
     factors = list(factors)
     factors.sort()

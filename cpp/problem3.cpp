@@ -11,9 +11,8 @@ set<unsigned long> primefactors(unsigned long number)
     set<unsigned long> factors;
 
     unsigned long n = 2;
-    unsigned long m = number / 2;
 
-    while (n < m)
+    while (n <= remaining)
     {
         while (remaining % n == 0)
         {
@@ -22,11 +21,6 @@ set<unsigned long> primefactors(unsigned long number)
         }
 
 		n = n > 2 ? n + 2 : n + 1;
-
-		if (n > remaining)
-		{
-			break;
-		}
     }
 
     return factors;
