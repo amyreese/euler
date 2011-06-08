@@ -58,8 +58,31 @@ def run(number):
 
     print
 
+def create(number):
+    template = path.join("cpp", "template.cpp")
+    problem = path.join("cpp", "problem" + number + ".cpp")
+    shutil.copy(template, problem)
+
+    template = path.join("python", "template.py")
+    problem = path.join("python", "problem" + number + ".py")
+    shutil.copy(template, problem)
+
+def edit(number):
+    cpp = path.join("cpp", "problem" + number + ".cpp")
+    py = path.join("python", "problem" + number + ".py")
+
+    args = ["vim", "-p"]
+
+    if path.isfile(cpp):
+        args.append(cpp)
+
+    if path.isfile(py):
+        args.append(py)
+
+    os.execvp("vim", args)
+
 def main():
-    options, arguments = getopt.getopt(sys.argv[1:], "ap:c:")
+    options, arguments = getopt.getopt(sys.argv[1:], "ap:c:e:")
 
     run_all = True
     run_one = False
@@ -70,13 +93,10 @@ def main():
             run_one = False
 
         elif option == "-c":
-            template = path.join("cpp", "template.cpp")
-            problem = path.join("cpp", "problem" + value + ".cpp")
-            shutil.copy(template, problem)
-            template = path.join("python", "template.py")
-            problem = path.join("python", "problem" + value + ".py")
-            shutil.copy(template, problem)
-            sys.exit(0)
+            create(value)
+
+        elif option == "-e":
+            edit(value)
 
         elif option == "-p":
             run_all = False
