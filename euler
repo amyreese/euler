@@ -73,6 +73,9 @@ def main():
             template = path.join("cpp", "template.cpp")
             problem = path.join("cpp", "problem" + value + ".cpp")
             shutil.copy(template, problem)
+            template = path.join("python", "template.py")
+            problem = path.join("python", "problem" + value + ".py")
+            shutil.copy(template, problem)
             sys.exit(0)
 
         elif option == "-p":
