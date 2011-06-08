@@ -6,20 +6,22 @@ from os import path
 import shutil
 from subprocess import Popen, PIPE
 import sys
+from time import time
 
-def call(command, timed=True):
-    if timed:
-        command = "time --quiet -f %E " + command
+def call(command):
+    time1 = time()
 
     proc = Popen(command.split(), stdout=PIPE, stderr=PIPE)
     stdout, stderr = proc.communicate()
 
-    if not timed and stderr:
+    time2 = time()
+
+    if stderr:
         print "Error executing `{0}`:".format(command)
         print stderr
         sys.exit(1)
 
-    return stdout.strip(), stderr.strip()
+    return stdout.strip(), (time2 - time1) * 1000
 
 def run(number):
     cwd = os.getcwd()
@@ -34,7 +36,7 @@ def run(number):
 
     if path.isfile(cpp):
         command = "g++ -g -Wall -o problem{0} {1}".format(number, cpp)
-        call(command, False)
+        call(command)
 
         command = "./problem" + number
         output, timing["cpp"] = call(command)
@@ -42,7 +44,7 @@ def run(number):
         print "{0:<8}  {1}".format("cpp", output)
 
         command = "rm " + command
-        call(command, False)
+        call(command)
 
     if path.isfile(py):
         command = "python " + py
@@ -52,7 +54,7 @@ def run(number):
 
     print "\nTiming:"
     for lang in timing:
-        print "{0:<8}  {1}".format(lang, timing[lang])
+        print "{0:<8}  {1:9.1f} ms".format(lang, timing[lang])
 
     print
 
