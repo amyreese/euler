@@ -8,6 +8,21 @@ from subprocess import Popen, PIPE
 import sys
 from time import time
 
+languages = {
+    "cpp": {
+        "path": "cpp",
+        "suffix": ".cpp",
+        "compile": "g++ -g -Wall -o problem{n} {source}",
+        "run": "./problem{n}",
+        "cleanup": "rm problem{n}",
+    },
+    "python": {
+        "path": "python",
+        "suffix": ".py",
+        "run": "python {source}",
+    },
+}
+
 def call(command):
     time1 = time()
 
@@ -24,33 +39,33 @@ def call(command):
     return stdout.strip(), (time2 - time1) * 1000
 
 def run(number):
-    cwd = os.getcwd()
+    global languages
 
     print "Executing problem #{0}...\n".format(number)
 
     timing = {}
-    cpp = path.join("cpp", "problem" + number + ".cpp")
-    py = path.join("python", "problem" + number + ".py")
 
     print "Output:"
 
-    if path.isfile(cpp):
-        command = "g++ -g -Wall -o problem{0} {1}".format(number, cpp)
-        call(command)
+    for name in languages:
+        lang = languages[name]
 
-        command = "./problem" + number
-        output, timing["cpp"] = call(command)
+        source = path.join(lang["path"], "problem" + number + lang["suffix"])
+        
+        if path.isfile(source):
+            if "compile" in lang:
+                command = lang["compile"].format(n=number, source=source)
+                call(command)
 
-        print "{0:<8}  {1}".format("cpp", output)
+            if "run" in lang:
+                command = lang["run"].format(n=number, source=source)
+                output, timing[name] = call(command)
 
-        command = "rm " + command
-        call(command)
+                print "{0:<8}  {1}".format(name, output)
 
-    if path.isfile(py):
-        command = "python " + py
-        output, timing["python"] = call(command)
-
-        print "{0:<8}  {1}".format("python", output)
+            if "cleanup" in lang:
+                command = lang["cleanup"].format(n=number, source=source)
+                call(command)
 
     print "\nTiming:"
     for lang in timing:
@@ -59,25 +74,26 @@ def run(number):
     print
 
 def create(number):
-    template = path.join("cpp", "template.cpp")
-    problem = path.join("cpp", "problem" + number + ".cpp")
-    shutil.copy(template, problem)
-
-    template = path.join("python", "template.py")
-    problem = path.join("python", "problem" + number + ".py")
-    shutil.copy(template, problem)
+    global languages
+    for name in languages:
+        lang = languages[name]
+        template = path.join(lang["path"], "template" + lang["suffix"])
+        problem = path.join(lang["path"], "problem" + number + lang["suffix"])
+        shutil.copy(template, problem)
 
 def edit(number):
-    cpp = path.join("cpp", "problem" + number + ".cpp")
-    py = path.join("python", "problem" + number + ".py")
+    global languages
 
-    args = ["vim", "-p"]
+    sources = []
 
-    if path.isfile(cpp):
-        args.append(cpp)
+    for name in languages:
+        lang = languages[name]
+        source = path.join(lang["path"], "problem" + number + lang["suffix"])
 
-    if path.isfile(py):
-        args.append(py)
+        if path.isfile(source):
+            sources.append(source)
+
+    args = ["vim", "-p"] + sources
 
     os.execvp("vim", args)
 
