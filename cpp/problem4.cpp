@@ -5,43 +5,47 @@
 #include <vector>
 using namespace std;
 
+#define uint unsigned int
+
 int main(int argc, char* argv[])
 {
-	vector<int> results;
-
-	for (int i = 999; i > 900; i--)
-	{
-		for (int j = 999; j > 900; j--)
-		{
-			results.push_back(i * j);
-		}
-	}
-
 	char buffer[16];
-	int length;
-	int m;
+	uint biggest = 0;
+	uint result;
+	uint length;
+	uint m;
 	bool match;
+	bool run = true;
 
-	for (vector<int>::iterator i = results.begin(); i != results.end(); i++)
+	for (uint i = 999; i > 900 && run; i--)
 	{
-		match = true;
-		length = sprintf(buffer, "%u", *i);
-		m = length / 2;
-
-		for (int k = 0; k < m; k++)
+		for (uint j = 999; j >= i; j--)
 		{
-			if (buffer[k] != buffer[length-k-1])
+			result = i * j;
+
+			match = true;
+			length = sprintf(buffer, "%u", result);
+			m = length / 2;
+
+			for (uint k = 0; k < m; k++)
 			{
-				match = false;
+				if (buffer[k] != buffer[length-k-1])
+				{
+					match = false;
+				}
+			}
+
+			if (match)
+			{
+				if (result > biggest)
+				{
+					biggest = result;
+				}
 			}
 		}
-
-		if (match)
-		{
-			printf("%u\n", *i);
-			break;
-		}
 	}
+
+	printf("%u\n", biggest);
 
 	return 0;
 }
