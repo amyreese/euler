@@ -1,11 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <math.h>
 
-#include <string>
-#include <vector>
-#include <map>
 using namespace std;
+
+#define uint unsigned int
 
 int main(int argc, char* argv[])
 {
