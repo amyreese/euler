@@ -73,13 +73,13 @@ def run(number):
 
     print
 
-def create(number):
+def create(name, number):
     global languages
-    for name in languages:
-        lang = languages[name]
-        template = path.join(lang["path"], "template" + lang["suffix"])
-        problem = path.join(lang["path"], "problem" + number + lang["suffix"])
-        shutil.copy(template, problem)
+
+    lang = languages[name]
+    template = path.join(lang["path"], "template" + lang["suffix"])
+    problem = path.join(lang["path"], "problem" + number + lang["suffix"])
+    shutil.copy(template, problem)
 
 def edit(number):
     global languages
@@ -98,10 +98,14 @@ def edit(number):
     os.execvp("vim", args)
 
 def main():
+    global languages
+
     options, arguments = getopt.getopt(sys.argv[1:], "ap:c:e:")
 
-    run_all = True
+    run_all = False
     run_one = False
+    create_source = False
+    edit_source = False
 
     for option, value in options:
         if option == "-a":
@@ -109,10 +113,10 @@ def main():
             run_one = False
 
         elif option == "-c":
-            create(value)
+            create_source = value
 
         elif option == "-e":
-            edit(value)
+            edit_source = value
 
         elif option == "-p":
             run_all = False
@@ -122,11 +126,33 @@ def main():
             print "zomg: {0} = {1}".format(option, value)
             sys.exit(2)
 
-    if run_all:
+    if create_source:
+        if create_source == "all":
+            for name in languages:
+                create(name, run_one)
+        elif create_source in languages:
+            if run_one:
+                create(create_source, run_one)
+            elif edit_source:
+                create(create_source, edit_source)
+            else:
+                print "Use -pX"
+                sys.exit(2)
+        else:
+            print "Lang {0} not defined".format(create_source)
+            sys.exit(2)
+
+    if edit_source:
+        edit(edit_source)
+
+    elif run_all:
         pass
 
-    else:
+    elif run_one:
         run(run_one)
+
+    else:
+        print "a little direction, please..."
 
 if __name__ == "__main__":
     main()
