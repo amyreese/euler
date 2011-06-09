@@ -19,14 +19,16 @@ int main(int argc, char* argv[])
 
 	char buffer[16];
 	int length;
+	int m;
 	bool match;
 
 	for (vector<int>::iterator i = results.begin(); i != results.end(); i++)
 	{
 		match = true;
 		length = sprintf(buffer, "%u", *i);
+		m = length / 2;
 
-		for (int k = 0; k < length; k++)
+		for (int k = 0; k < m; k++)
 		{
 			if (buffer[k] != buffer[length-k-1])
 			{
