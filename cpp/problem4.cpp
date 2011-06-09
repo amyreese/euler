@@ -9,6 +9,9 @@ using namespace std;
 
 int main(int argc, char* argv[])
 {
+    uint top    = 999;
+    uint bottom = 900;
+
 	char buffer[16];
 	uint biggest = 0;
 	uint result;
@@ -17,11 +20,15 @@ int main(int argc, char* argv[])
 	bool match;
 	bool run = true;
 
-	for (uint i = 999; i > 900 && run; i--)
+	for (uint i = top; i > bottom && run; i--)
 	{
-		for (uint j = 999; j >= i; j--)
+		for (uint j = top; j >= i; j--)
 		{
 			result = i * j;
+            if (result <= biggest)
+            {
+                continue;
+            }
 
 			match = true;
 			length = sprintf(buffer, "%u", result);
