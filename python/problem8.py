@@ -20,4 +20,31 @@ number = "73167176531330624919225119674426574742355349194934\
 05886116467109405077541002256983155200055935729725\
 71636269561882670428252483600823257530420752963450"
 
-print number
+s = len(number)
+i = 0
+k = 0
+result = 0
+a,b,c,d,e = 0,0,0,0,0
+
+while i < s:
+    digit = int(number[i])
+    i += 1
+
+    if digit == 0:
+        k = 0
+        continue
+
+    a = b
+    b = c
+    c = d
+    d = e
+    e = digit
+
+    if k > 4:
+        product = a * b * c * d * e
+
+        result = max(result, product)
+
+    k += 1
+
+print result

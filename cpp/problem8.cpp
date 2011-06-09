@@ -1,11 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <math.h>
 
-#include <string>
-using namespace std;
+#define uint unsigned int
 
-string number = "73167176531330624919225119674426574742355349194934\
+char number[1024] = "73167176531330624919225119674426574742355349194934\
 96983520312774506326239578318016984801869478851843\
 85861560789112949495459501737958331952853208805511\
 12540698747158523863050715693290963295227443043557\
@@ -28,7 +28,48 @@ string number = "73167176531330624919225119674426574742355349194934\
 
 int main(int argc, char* argv[])
 {
-	printf("%s\n", number.data());
+	uint s = strlen(number);
+	uint i = 0;
+	uint k = 0;
+	uint a = 0;
+	uint b = 0;
+	uint c = 0;
+	uint d = 0;
+	uint e = 0;
+	uint digit;
+	uint product;
+	uint result = 0;
+
+	while (i < s)
+	{
+		digit = ((int) number[i]) - 48;
+		i++;
+
+		if (digit == 0)
+		{
+			k = 0;
+			continue;
+		}
+
+		a = b;
+		b = c;
+		c = d;
+		d = e;
+		e = digit;
+
+		if (k > 4)
+		{
+			product = a * b * c * d * e;
+			if (product > result)
+			{
+				result = product;
+			}
+		}	
+
+		k++;
+	}
+
+	printf("%u\n", result);
 
 	return 0;
 }
