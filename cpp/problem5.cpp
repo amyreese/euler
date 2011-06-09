@@ -2,28 +2,7 @@
 #include <stdlib.h>
 #include <math.h>
 
-bool isprime(unsigned int number)
-{
-	unsigned int n = 3;
-	unsigned int m = number / 2 + 1;
-
-	if (number % 2 == 0)
-	{
-		return false;
-	}
-	
-	while (n < m)
-	{
-		if (number % n == 0)
-		{
-			return false;
-		}
-
-		n += 2;
-	}
-
-	return true;
-}
+#include "primes.h"
 
 unsigned int smallestmultiple(unsigned int range)
 {

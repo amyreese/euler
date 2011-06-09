@@ -1,17 +1,5 @@
 
-def isprime(number):
-    n = 2
-    m = number / 2 + 1
-    while n < m:
-        if number % n == 0:
-            return False
-
-        if n > 2:
-            n += 2
-        else:
-            n += 1
-
-    return True
+from primes import *
 
 def smallestmultiple(numbers):
     numbers = sorted(numbers, reverse=True)
