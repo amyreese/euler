@@ -33,14 +33,13 @@ for y in range(size-3):
             if horiz > biggest:
                 biggest = horiz
 
-        vert = grid[y][x] * grid[y+1][x] * grid[y+2][x] * grid[y+3][x]
-        if vert > biggest:
-            biggest = vert
-
-        if x < size - 3:
             diag = grid[y][x] * grid[y+1][x+1] * grid[y+2][x+2] * grid[y+3][x+3]
             if diag > biggest:
                 biggest = diag
+
+        vert = grid[y][x] * grid[y+1][x] * grid[y+2][x] * grid[y+3][x]
+        if vert > biggest:
+            biggest = vert
 
         if x > 2:
             diag = grid[y][x] * grid[y+1][x-1] * grid[y+2][x-2] * grid[y+3][x-3]
