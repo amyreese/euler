@@ -46,6 +46,11 @@ uint sieve_n = 3;
 
 uint sieve(uint target)
 {
+    if (target == 1)
+    {
+        return 2;
+    }
+
     map<uint, uint>::iterator i;
 	uint p,x;
 
