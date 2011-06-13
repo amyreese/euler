@@ -4,7 +4,7 @@ using namespace std;
 
 #define uint unsigned int
 
-bool issieve_prime(uint number)
+bool isprime(uint number)
 {
 	if (number < 2)
 	{
