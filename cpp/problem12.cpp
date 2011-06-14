@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 
 using namespace std;
 
@@ -9,6 +10,7 @@ int main(int argc, char* argv[])
 {
 	uint n = 2;
 	uint triangle = 1;
+	uint root;
 	uint factor;
 	uint count;
 
@@ -17,11 +19,17 @@ int main(int argc, char* argv[])
 		triangle += n++;
 		count = 2;
 
-		for (factor = triangle / 2; factor > 1; factor--)
+		root = floor(sqrt(triangle));
+		if (root * root == triangle)
+		{
+			count++;
+		}
+
+		for (factor = 2; factor < root; factor++)
 		{
 			if (triangle % factor == 0)
 			{
-				count++;
+				count += 2;
 			}
 		}
 	}
