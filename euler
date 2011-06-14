@@ -23,20 +23,32 @@ languages = {
     },
 }
 
-def call(command):
-    time1 = time()
+def call(command, repeat=1, threshold=5000):
+    times = []
+    output = None
 
-    proc = Popen(command.split(), stderr=PIPE)
-    stdout, stderr = proc.communicate()
+    for i in range(repeat):
+        time1 = time()
 
-    time2 = time()
+        proc = Popen(command.split(), stdout=output, stderr=PIPE)
+        stdout, stderr = proc.communicate()
 
-    if stderr:
-        print "Error executing `{0}`:".format(command)
-        print stderr
-        sys.exit(1)
+        time2 = time()
 
-    return (time2 - time1) * 1000
+        if stderr:
+            print "Error executing `{0}`:".format(command)
+            print stderr
+            sys.exit(1)
+
+        ms = (time2 - time1) * 1000
+        times.append(ms)
+
+        if ms > threshold:
+            break
+
+        output = PIPE
+
+    return times
 
 def run(number):
     global languages
@@ -62,7 +74,7 @@ def run(number):
                 sys.stdout.flush()
 
                 command = lang["run"].format(n=number, source=source)
-                timing[name] = call(command)
+                timing[name] = call(command, repeat=3)
 
             if "cleanup" in lang:
                 command = lang["cleanup"].format(n=number, source=source)
@@ -70,7 +82,15 @@ def run(number):
 
     print "\nTiming:"
     for lang in timing:
-        print "{0:<8}  {1:9.1f} ms".format(lang, timing[lang])
+        times = timing[lang]
+        count = len(times)
+        average = sum(times) / count
+        variance = max(times) - min(times)
+
+        if count > 1:
+            print "{0:<8}  {1:9.1f} ms avg {2:7.1f} ms var".format(lang, average, variance)
+        else:
+            print "{0:<8}  {1:9.1f} ms".format(lang, average)
 
     print
 
