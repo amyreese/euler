@@ -26,7 +26,7 @@ languages = {
 def call(command):
     time1 = time()
 
-    proc = Popen(command.split(), stdout=PIPE, stderr=PIPE)
+    proc = Popen(command.split(), stderr=PIPE)
     stdout, stderr = proc.communicate()
 
     time2 = time()
@@ -36,7 +36,7 @@ def call(command):
         print stderr
         sys.exit(1)
 
-    return stdout.strip(), (time2 - time1) * 1000
+    return (time2 - time1) * 1000
 
 def run(number):
     global languages
@@ -58,10 +58,11 @@ def run(number):
                 call(command)
 
             if "run" in lang:
-                command = lang["run"].format(n=number, source=source)
-                output, timing[name] = call(command)
+                sys.stdout.write("{0:<8}  ".format(name))
+                sys.stdout.flush()
 
-                print "{0:<8}  {1}".format(name, output)
+                command = lang["run"].format(n=number, source=source)
+                timing[name] = call(command)
 
             if "cleanup" in lang:
                 command = lang["cleanup"].format(n=number, source=source)
