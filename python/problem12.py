@@ -1,10 +1,31 @@
 
 import math
 
+def primefactors(number):
+    remaining = number
+    factors = {}
+
+    n = 2
+
+    while n <= remaining:
+        while remaining % n == 0:
+            if n in factors:
+                factors[n] += 1
+            else:
+                factors[n] = 1
+            remaining = remaining / n
+
+        if n > 2:
+            n += 2
+        else:
+            n += 1
+
+    return factors
+
 def factor(number):
     factors = [number,1]
 
-    root = math.floor(number ** 0.5)
+    root = int(math.floor(number ** 0.5))
     if root * root == number:
         factors.append(root)
 
@@ -19,8 +40,6 @@ def factor(number):
     return factors
 
 def triangle():
-    yield 1
-
     t = 1
     n = 2
 
@@ -33,9 +52,14 @@ def triangle():
 triangles = triangle()
 
 for t in triangles:
-    f = factor(t)
+    primes = primefactors(t)
 
-    if len(f) > 500:
+    factors = 1
+    for prime in primes:
+        p = primes[prime] + 1
+        factors *= p
+
+    if factors > 500:
         print t
         break
 
