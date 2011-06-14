@@ -33,6 +33,6 @@ while seed > limit:
         longest = count
         longest_seed = seed
 
-    seed -= 1
+    seed -= 2
 
 print longest_seed, longest

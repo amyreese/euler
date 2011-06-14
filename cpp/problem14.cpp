@@ -53,7 +53,7 @@ int main(int argc, char* argv[])
 			longest_seed = seed;
 		}
 
-		seed--;
+		seed -= 2;
 	}
 
 	printf("%u %u\n", longest_seed, longest);
