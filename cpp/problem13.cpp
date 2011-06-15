@@ -6,7 +6,6 @@ using namespace std;
 #define uint unsigned int
 #define ulong unsigned long long
 
-/*
 ulong numbers[100] = {
     37107287533,
     46376937677,
@@ -109,11 +108,22 @@ ulong numbers[100] = {
     20849603980,
     53503534226,
 };
-*/
 
 int main(int argc, char* argv[])
 {
-	printf("%d, %d\n", sizeof(uint), sizeof(ulong));
+	ulong result = 0;
+	for (uint i = 0; i < 100; i++)
+	{
+		result += numbers[i];
+	}
+
+	char buffer[20];
+
+	sprintf(buffer, "%llu", result);
+	buffer[10] = '\0';
+
+	printf("%s\n", buffer);
+
 	return 0;
 }
 
