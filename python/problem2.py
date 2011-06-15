@@ -1,16 +1,11 @@
 
-def fib(size=-1):
-    count = 0
+def fib(limit):
     last = 0
     current = 1
 
-    while size < 0 or count < size:
+    while current < limit:
         last, current = current, last + current
 
-        if current > 4000000:
-            break
-
-        count += 1
         yield current
 
-print sum((i for i in fib() if i % 2 == 0))
+print sum((i for i in fib(4000000) if i % 2 == 0))
