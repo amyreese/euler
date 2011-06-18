@@ -23,6 +23,8 @@ languages = {
     },
 }
 
+solutions = ["","a","b","c","d","e","f"]
+
 def call(command, repeat=1, threshold=5000):
     times = []
     output = None
@@ -52,6 +54,7 @@ def call(command, repeat=1, threshold=5000):
 
 def run(number):
     global languages
+    global solutions
 
     print "Executing problem #{0}...\n".format(number)
 
@@ -62,23 +65,27 @@ def run(number):
     for name in languages:
         lang = languages[name]
 
-        source = path.join(lang["path"], "problem" + number + lang["suffix"])
-        
-        if path.isfile(source):
-            if "compile" in lang:
-                command = lang["compile"].format(n=number, source=source)
-                call(command)
+        for sol in solutions:
+            source = path.join(lang["path"], "problem" + number + sol + lang["suffix"])
+            
+            if path.isfile(source):
+                if "compile" in lang:
+                    command = lang["compile"].format(n=number, source=source)
+                    call(command)
 
-            if "run" in lang:
-                sys.stdout.write("{0:<8}  ".format(name))
-                sys.stdout.flush()
+                if "run" in lang:
+                    sys.stdout.write("{0:<8}  ".format(name + sol))
+                    sys.stdout.flush()
 
-                command = lang["run"].format(n=number, source=source)
-                timing[name] = call(command, repeat=3)
+                    command = lang["run"].format(n=number, source=source)
+                    timing[name + sol] = call(command, repeat=3)
 
-            if "cleanup" in lang:
-                command = lang["cleanup"].format(n=number, source=source)
-                call(command)
+                if "cleanup" in lang:
+                    command = lang["cleanup"].format(n=number, source=source)
+                    call(command)
+
+            else:
+                break
 
     print "\nTiming:"
     for lang in timing:
@@ -109,10 +116,15 @@ def edit(number):
 
     for name in languages:
         lang = languages[name]
-        source = path.join(lang["path"], "problem" + number + lang["suffix"])
 
-        if path.isfile(source):
-            sources.append(source)
+        for sol in solutions:
+            source = path.join(lang["path"], "problem" + number + sol + lang["suffix"])
+
+            if path.isfile(source):
+                sources.append(source)
+
+            else:
+                break
 
     args = ["vim", "-p"] + sources
 
