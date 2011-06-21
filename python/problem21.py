@@ -30,7 +30,7 @@ while a < limit:
 
     b = sum(factors(a))
 
-    if a == b:
+    if a <= b:
         continue
 
     db = sum(factors(b))

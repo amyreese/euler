@@ -68,7 +68,7 @@ int main(int argc, char* argv[])
 
 		b = sum(factors(a));
 
-		if (a == b)
+		if (a <= b)
 		{
 			continue;
 		}
