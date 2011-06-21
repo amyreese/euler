@@ -51,15 +51,7 @@ int main(int argc, char* argv[])
 				namestr[i++] = 0;
 				inname = false;
 
-				for (iter = names.begin(); iter != names.end(); iter++)
-				{
-					if (strcmp(name, *iter))
-					{
-						break;
-					}
-				}
-
-				names.insert(iter, name);
+				names.push_back(name);
 			}
 		}
 		else
@@ -71,6 +63,8 @@ int main(int argc, char* argv[])
 			}
 		}
 	}
+
+	names.sort(strcmp);
 
 	uint a = 'A' - 1;
 	uint pos = 1;
