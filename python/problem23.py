@@ -1,35 +1,37 @@
 import math
 
 def factors(number):
-    divisors = [1]
+    result = 1
 
     root = number ** 0.5
     r = int(math.floor(root))
     if r * r == number:
-        divisors.append(r)
+        result += r
 
     n = 2
     while n < root:
         if number % n == 0:
-            divisors.append(n)
-            divisors.append(number / n)
+            result += n
+            result += number / n
 
         n += 1
 
-    return divisors
+    return result
 
-def abundant(number):
-    divisors = factors(number)
-    s = sum(divisors)
-    return s > number
-
-limit = 28123
+limit = 20161
 
 numbers = set(range(limit+1))
-abundants = [n for n in range(12,limit) if abundant(n)]
+abundants = [n for n in range(12,limit) if factors(n) > n]
 
-for i,q in enumerate(abundants):
+i = 0
+for q in abundants:
     for p in abundants[i:]:
-        numbers.discard(q + p)
+        r = q + p
+        if r > limit:
+            break
 
-print sum(numbers), sum(range(limit+1)), sum(abundants)
+        numbers.discard(r)
+
+    i += 1
+
+print sum(numbers)
