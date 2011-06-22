@@ -47,12 +47,11 @@ int main(int argc, char* argv[])
 	uint limit = 20161;
 	uint sum = 0;
 	uint r;
+	uint size;
 
 	vector<uint> abundants;
-	vector<uint>::iterator aiter, biter, aend;
 
-	map<uint,bool> sums;
-	map<uint,bool>::iterator send;
+	bool sums[20161] = {false};
 
 	for (uint i = 12; i <= limit; i++)
 	{
@@ -62,12 +61,12 @@ int main(int argc, char* argv[])
 		}
 	}
 
-	aend = abundants.end();
-	for (aiter = abundants.begin(); aiter != aend; aiter++)
+	size = abundants.size();
+	for (uint i = 0; i < size; i++)
 	{
-		for (biter = aiter; biter != aend; biter++)
+		for (uint j = 0; j <= i; j++)
 		{
-			r = *aiter + *biter;
+			r = abundants[j] + abundants[i];
 
 			if (r > limit)
 			{
@@ -78,10 +77,9 @@ int main(int argc, char* argv[])
 		}
 	}
 
-	send = sums.end();
 	for (uint i = 1; i <= limit; i++)
 	{
-		if (sums.find(i) == send)
+		if (!sums[i])
 		{
 			sum += i;
 		}
