@@ -1,5 +1,5 @@
 
-limit = 10
+limit = 1
 perms = {}
 
 def findperms(seen=None):
@@ -20,3 +20,5 @@ perms = sorted(perms.keys())
 
 if len(perms) > 1000000:
     print perms[999999]
+else:
+    print
