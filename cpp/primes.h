@@ -37,6 +37,16 @@ bool isprime(uint number)
 	return true;
 }
 
+bool isprime(int number)
+{
+    if (number < 0)
+    {
+        return false;
+    }
+
+    return isprime((uint) number);
+}
+
 map<uint, uint> sieve_results;
 map<uint, uint> sieve_composites;
 
