@@ -12,7 +12,7 @@ languages = {
     "cpp": {
         "path": "cpp",
         "suffix": ".cpp",
-        "compile": "g++ -g -Wall -o problem{n} {source}",
+        "compile": "g++ -std=c++11 -g -Wall -o problem{n} {source}",
         "run": "./problem{n}",
         "cleanup": "rm problem{n}",
     },
