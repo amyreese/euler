@@ -5,12 +5,13 @@ from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
 
-import getopt
 import os
-from os import path
 import shutil
-from subprocess import Popen, PIPE
 import sys
+
+from argparse import ArgumentParser
+from os import path
+from subprocess import Popen, PIPE
 from time import time
 
 languages = {
@@ -135,62 +136,39 @@ def edit(number):
 
     os.execvp("vim", args)
 
+def parse_args():
+    command_list = sorted(['create', 'run', 'edit'])
+    language_list = sorted(['all'] + languages.keys())
+
+    parser = ArgumentParser()
+    parser.add_argument('command', default='run', choices=command_list)
+    parser.add_argument('problem', default='all', nargs='?')
+    parser.add_argument('language', default='all', nargs='?', choices=language_list)
+
+    return parser.parse_args()
+
 def main():
     global languages
 
-    options, arguments = getopt.getopt(sys.argv[1:], "ap:c:e:")
+    options = parse_args()
 
-    run_all = False
-    run_one = False
-    create_source = False
-    edit_source = False
-
-    for option, value in options:
-        if option == "-a":
-            run_all = True
-            run_one = False
-
-        elif option == "-c":
-            create_source = value
-
-        elif option == "-e":
-            edit_source = value
-
-        elif option == "-p":
-            run_all = False
-            run_one = value
-
-        else:
-            print("zomg: {0} = {1}".format(option, value))
-            sys.exit(2)
-
-    if create_source:
-        if create_source == "all":
+    if options.command == 'create':
+        if options.language == 'all':
             for name in languages:
-                create(name, run_one)
-        elif create_source in languages:
-            if run_one:
-                create(create_source, run_one)
-            elif edit_source:
-                create(create_source, edit_source)
-            else:
-                print("Use -pX")
-                sys.exit(2)
+                create(name, options.problem)
         else:
-            print("Lang {0} not defined".format(create_source))
-            sys.exit(2)
+            create(create_source, options.problem)
 
-    if edit_source:
-        edit(edit_source)
+    elif options.command == 'edit':
+        edit(options.problem)
 
-    elif run_all:
-        pass
+    elif options.command == 'run':
+        if options.problem == 'all':
+            pass
+        else:
+            run(options.problem)
 
-    elif run_one:
-        run(run_one)
-
-    else:
-        print("a little direction, please...")
+    return 0
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())
