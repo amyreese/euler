@@ -1,4 +1,9 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python
+
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
+from __future__ import unicode_literals
 
 import getopt
 import os
@@ -38,8 +43,8 @@ def call(command, repeat=1, threshold=5000):
         time2 = time()
 
         if stderr:
-            print "Error executing `{0}`:".format(command)
-            print stderr
+            print("Error executing `{0}`:".format(command))
+            print(stderr)
             sys.exit(1)
 
         ms = (time2 - time1) * 1000
@@ -56,18 +61,18 @@ def run(number):
     global languages
     global solutions
 
-    print "Executing problem #{0}...\n".format(number)
+    print("Executing problem #{0}...\n".format(number))
 
     timing = {}
 
-    print "Output:"
+    print("Output:")
 
     for name in languages:
         lang = languages[name]
 
         for sol in solutions:
             source = path.join(lang["path"], "problem" + number + sol + lang["suffix"])
-            
+
             if path.isfile(source):
                 if "compile" in lang:
                     command = lang["compile"].format(n=number, source=source)
@@ -87,7 +92,7 @@ def run(number):
             else:
                 break
 
-    print "\nTiming:"
+    print("\nTiming:")
     for lang in timing:
         times = timing[lang]
         count = len(times)
@@ -95,11 +100,11 @@ def run(number):
         variance = max(times) - min(times)
 
         if count > 1:
-            print "{0:<8}  {1:9.1f} ms avg {2:7.1f} ms var".format(lang, average, variance)
+            print("{0:<8}  {1:9.1f} ms avg {2:7.1f} ms var".format(lang, average, variance))
         else:
-            print "{0:<8}  {1:9.1f} ms".format(lang, average)
+            print("{0:<8}  {1:9.1f} ms".format(lang, average))
 
-    print
+    print()
 
 def create(name, number):
     global languages
@@ -156,7 +161,7 @@ def main():
             run_one = value
 
         else:
-            print "zomg: {0} = {1}".format(option, value)
+            print("zomg: {0} = {1}".format(option, value))
             sys.exit(2)
 
     if create_source:
@@ -169,10 +174,10 @@ def main():
             elif edit_source:
                 create(create_source, edit_source)
             else:
-                print "Use -pX"
+                print("Use -pX")
                 sys.exit(2)
         else:
-            print "Lang {0} not defined".format(create_source)
+            print("Lang {0} not defined".format(create_source))
             sys.exit(2)
 
     if edit_source:
@@ -185,7 +190,7 @@ def main():
         run(run_one)
 
     else:
-        print "a little direction, please..."
+        print("a little direction, please...")
 
 if __name__ == "__main__":
     main()
