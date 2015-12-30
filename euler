@@ -72,7 +72,7 @@ def run(number, repeat):
 
     print('Output:')
 
-    for name in languages:
+    for name in sorted(languages):
         lang = languages[name]
 
         for sol in solutions:
@@ -98,7 +98,7 @@ def run(number, repeat):
                 break
 
     print('\nTiming:')
-    for lang in timing:
+    for lang in sorted(timing):
         times = timing[lang]
         count = len(times)
         average = sum(times) / count
