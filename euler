@@ -114,8 +114,13 @@ def run(number, repeat):
 def create(name, number):
     lang = languages[name]
     template = path.join(lang['path'], 'template' + lang['suffix'])
-    problem = path.join(lang['path'], 'problem' + number + lang['suffix'])
-    shutil.copy(template, problem)
+
+    for sol in solutions:
+        problem = path.join(lang['path'], 'problem' + number + sol + lang['suffix'])
+
+        if not path.exists(problem):
+            shutil.copy(template, problem)
+            break
 
 def edit(number):
     sources = []
