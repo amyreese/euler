@@ -66,9 +66,6 @@ def call(command, repeat=1, threshold=5000):
     return times
 
 def run(number, repeat):
-    global languages
-    global solutions
-
     print('Executing problem #{0}...\n'.format(number))
 
     timing = {}
@@ -115,16 +112,12 @@ def run(number, repeat):
     print()
 
 def create(name, number):
-    global languages
-
     lang = languages[name]
     template = path.join(lang['path'], 'template' + lang['suffix'])
     problem = path.join(lang['path'], 'problem' + number + lang['suffix'])
     shutil.copy(template, problem)
 
 def edit(number):
-    global languages
-
     sources = []
 
     for name in languages:
