@@ -31,7 +31,7 @@ languages = {
         'path': 'swift',
         'suffix': '.swift',
         'compile': 'swiftc -o problem{n} {source}',
-        'run': 'swift {source}',
+        'run': './problem{n}',
         'cleanup': 'rm problem{n}',
     },
 }
