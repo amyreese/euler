@@ -164,7 +164,9 @@ def main():
             for name in languages:
                 create(name, options.problem)
         else:
-            create(create_source, options.problem)
+            create(options.language, options.problem)
+
+        edit(options.problem)
 
     elif options.command == 'edit':
         edit(options.problem)
