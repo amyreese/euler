@@ -18,7 +18,7 @@ languages = {
     'cpp': {
         'path': 'cpp',
         'suffix': '.cpp',
-        'compile': 'g++ -std=c++11 -g -Wall -o problem{n} {source}',
+        'compile': 'clang++ -std=c++11 -o problem{n} {source}',
         'run': './problem{n}',
         'cleanup': 'rm problem{n}',
     },
