@@ -27,6 +27,11 @@ languages = {
         'suffix': '.py',
         'run': 'python2 {source}',
     },
+    'swift': {
+        'path': 'swift',
+        'suffix': '.swift',
+        'run': 'swift {source}',
+    },
 }
 
 solutions = ['','a','b','c','d','e','f']
