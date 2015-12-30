@@ -65,7 +65,7 @@ def call(command, repeat=1, threshold=5000):
 
     return times
 
-def run(number):
+def run(number, repeat):
     global languages
     global solutions
 
@@ -91,7 +91,7 @@ def run(number):
                     sys.stdout.flush()
 
                     command = lang['run'].format(n=number, source=source)
-                    timing[name + sol] = call(command, repeat=3)
+                    timing[name + sol] = call(command, repeat)
 
                 if 'cleanup' in lang:
                     command = lang['cleanup'].format(n=number, source=source)
@@ -148,6 +148,7 @@ def parse_args():
     language_list = sorted(['all'] + languages.keys())
 
     parser = ArgumentParser()
+    parser.add_argument('-r', '--repeat', type=int, default=3)
     parser.add_argument('command', default='run', choices=command_list)
     parser.add_argument('problem', default='all', nargs='?')
     parser.add_argument('language', default='all', nargs='?', choices=language_list)
@@ -175,7 +176,7 @@ def main():
         if options.problem == 'all':
             pass
         else:
-            run(options.problem)
+            run(options.problem, options.repeat)
 
     return 0
 
